@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício 4 - Menu Responsivo com Animação</title>
+    <style>
+        /* ===== EXERCÍCIO 4: MENU RESPONSIVO COM ANIMAÇÃO =====
+         * 
+         * 🎯 OBJETIVOS:
+         *   1. Menu horizontal que vira hamburger no mobile
+         *   2. Animações com @keyframes e transition
+         *   3. Transform (rotate, scale, translate)
+         *   4. Menu dropdown com subitens
+         *   5. Ícone hamburger animado (3 barrinhas → X)
+         *   6. Overlay quando menu mobile estiver aberto
+         *
+         * 📝 INSTRUÇÕES:
+         *   - Redimensione para ver o menu se adaptar
+         *   - Clique no hamburger para ver a animação
+         *   - Passe o mouse nos dropdowns
+         */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+        }
+
+        /* ===== HEADER / NAVBAR ===== */
+        .navbar {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            height: 70px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .logo span {
+            color: #3498db;
+        }
+
+        /* TODO: Estilize a lista do menu */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            /* TODO: Adicione transição suave */
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* TODO: Crie o dropdown menu */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 10px;
+            padding: 10px 0;
+            min-width: 200px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            /* TODO: Use transform + opacity para animar */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(15px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .nav-menu li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(5px);
+        }
+
+        .dropdown-menu a {
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 0;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f0f4f8;
+            color: #3498db;
+            transform: translateX(5px);
+        }
+
+        .dropdown-menu .divider {
+            height: 1px;
+            background: #eee;
+            margin: 5px 15px;
+        }
+
+        /* TODO: Crie um indicador de seta para dropdown */
+        .arrow {
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-menu li:hover .arrow {
+            transform: rotate(180deg);
+        }
+
+        /* ===== HAMBURGER ICON ===== */
+        /* TODO: Estilize o botão hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 100;
+            position: relative;
+        }
+
+        /* TODO: Crie as 3 barrinhas do hamburger */
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+            /* TODO: Adicione transição para animar para X */
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        /* TODO: Anime as barrinhas para formar um X */
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* ===== OVERLAY ===== */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            /* TODO: Animar o overlay */
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 50;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ===== HERO / CONTEÚDO ===== */
+        .hero {
+            min-height: calc(100vh - 70px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            /* TODO: Adicione animação de fadeInUp */
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            opacity: 0.9;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        .hero .btn-hero {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #764ba2;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 0.4s backwards;
+        }
+
+        .hero .btn-hero:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Seção de features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #777;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            /* TODO: Menu mobile em tela cheia */
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 300px;
+                height: 100vh;
+                background: #2c3e50;
+                flex-direction: column;
+                padding: 80px 30px 30px;
+                gap: 5px;
+                transition: right 0.4s ease;
+                z-index: 70;
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+                overflow-y: auto;
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+
+            .nav-menu a {
+                padding: 12px 15px;
+                font-size: 1rem;
+                width: 100%;
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                background: rgba(255, 255, 255, 0.05);
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                border-radius: 8px;
+            }
+
+            .nav-menu li:hover .dropdown-menu {
+                max-height: 300px;
+                padding: 10px 0;
+                transform: none;
+            }
+
+            .dropdown-menu a {
+                color: rgba(255, 255, 255, 0.7);
+                padding-left: 30px;
+            }
+
+            .dropdown-menu .divider {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .nav-menu {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#" class="logo">⚡ <span>Dev</span> Academy</a>
+        
+        <button class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#">🏠 Home</a></li>
+            <li>
+                <a href="#">📚 Cursos <span class="arrow">▼</span></a>
+                <div class="dropdown-menu">
+                    <a href="#">🔹 HTML5 & CSS3</a>
+                    <a href="#">🔹 JavaScript</a>
+                    <a href="#">🔹 React.js</a>
+                    <div class="divider"></div>
+                    <a href="#">🔸 Node.js</a>
+                    <a href="#">🔸 Python</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">💡 Recursos <span class="arrow">▼</span></a>
+                <div class="dropdown-menu">
+                    <a href="#">📄 Documentação</a>
+                    <a href="#">🎥 Tutoriais</a>
+                    <a href="#">📦 Projetos</a>
+                </div>
+            </li>
+            <li><a href="#">💰 Preços</a></li>
+            <li><a href="#">📞 Contato</a></li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <section class="hero">
+        <h1>🚀 Domine o Desenvolvimento Web</h1>
+        <p>Aprenda HTML5, CSS3, JavaScript e as tecnologias mais modernas do mercado com nossos cursos práticos e projetos reais.</p>
+        <a href="#" class="btn-hero">🎯 Comece Agora</a>
+    </section>
+
+    <section class="features">
+        <div class="feature-card">
+            <div class="icon">📱</div>
+            <h3>Design Responsivo</h3>
+            <p>Crie sites que funcionam perfeitamente em qualquer dispositivo, do desktop ao mobile.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">⚡</div>
+            <h3>Performance</h3>
+            <p>Aprenda técnicas de otimização para sites rápidos e eficientes.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🎨</div>
+            <h3>Animações CSS</h3>
+            <p>Domine animações e transições para criar experiências únicas.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🔧</div>
+            <h3>Ferramentas Modernas</h3>
+            <p>Trabalhe com as melhores ferramentas e frameworks do mercado.</p>
+        </div>
+    </section>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        const overlay = document.getElementById('overlay');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Fechar menu ao clicar em um link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        });
+    </script>
+
+    <!-- 
+        🧪 DESAFIOS EXTRAS:
+        1. Adicione scroll suave para seções da página
+        2. Crie header que encolhe ao scrollar (sticky shrink)
+        3. Adicione indicador de "active" na página atual
+        4. Implemente sub-dropdown (dropdown dentro de dropdown)
+        5. Crie um mega menu com grid de opções
+    -->
+</body>
+</html>
+

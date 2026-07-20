@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício 7 - Landing Page com Parallax</title>
+    <style>
+        /* ===== EXERCÍCIO 7: LANDING PAGE COM PARALLAX =====
+         * 
+         * 🎯 OBJETIVOS:
+         *   1. Efeito parallax com background-attachment: fixed
+         *   2. Seções com temáticas diferentes
+         *   3. HTML5 semântico (header, main, section, article, footer)
+         *   4. Tipografia avançada (font-weight, letter-spacing, text-shadow)
+         *   5. Botões CTA (Call to Action)
+         *   6. Animações no scroll
+         *   7. Formulário de contato integrado
+         *
+         * 📝 INSTRUÇÕES:
+         *   - Scroll para ver o parallax
+         *   - Complete os TODOs
+         *   - Experimente diferentes imagens de fundo
+         */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER FIXO ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            z-index: 100;
+            /* TODO: Crie um fundo semi-transparente */
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px 40px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #f39c12;
+        }
+
+        header nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        header nav a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        header nav a:hover {
+            color: #f39c12;
+        }
+
+        /* ===== SEÇÕES PARALLAX ===== */
+        .parallax {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 100px 20px;
+            /* TODO: Use background-attachment: fixed para o parallax */
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .parallax::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .parallax > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* TODO: Defina backgrounds diferentes para cada seção */
+        #home {
+            background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600');
+        }
+
+        #about {
+            background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1600');
+            min-height: 70vh;
+        }
+
+        #services {
+            background-image: url('https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=1600');
+            min-height: 70vh;
+        }
+
+        #contact {
+            background-image: url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1600');
+            min-height: 80vh;
+        }
+
+        /* Conteúdo das seções parallax */
+        .parallax h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.5);
+            letter-spacing: -1px;
+        }
+
+        .parallax h1 span {
+            color: #f39c12;
+        }
+
+        .parallax p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            line-height: 1.8;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        /* Botões */
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #f39c12;
+            color: white;
+            box-shadow: 0 5px 20px rgba(243, 156, 18, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(243, 156, 18, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            margin-left: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #333;
+        }
+
+        /* ===== SEÇÕES NORMAIS (SEM PARALLAX) ===== */
+        .section {
+            background: #1a1a2e;
+            padding: 80px 20px;
+        }
+
+        .section.light {
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .section-content {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .section-title span {
+            color: #f39c12;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 50px;
+            font-size: 1.05rem;
+        }
+
+        .section.light .section-subtitle {
+            color: #777;
+        }
+
+        /* Cards de serviços */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .section.light .service-card {
+            background: white;
+            border-color: #eee;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-card .icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        .service-card p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .section.light .service-card p {
+            color: #777;
+        }
+
+        /* ===== SEÇÃO DE CONTATO ===== */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .contact-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-info p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .contact-info .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* TODO: Estilize o formulário de contato */
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 14px 18px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #f39c12;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #0f0f1a;
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: #f39c12;
+            text-decoration: none;
+        }
+
+        /* ===== ANIMAÇÕES ===== */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            header nav {
+                gap: 12px;
+            }
+
+            header nav a {
+                font-size: 0.8rem;
+            }
+
+            .parallax h1 {
+                font-size: 2.2rem;
+            }
+
+            .parallax p {
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 12px 25px;
+                font-size: 0.9rem;
+            }
+
+            .btn-secondary {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .parallax h1 {
+                font-size: 1.8rem;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <a href="#" class="logo">⚡ <span>Code</span>Forge</a>
+        <nav>
+            <a href="#home">Início</a>
+            <a href="#about">Sobre</a>
+            <a href="#services">Serviços</a>
+            <a href="#contact">Contato</a>
+        </nav>
+    </header>
+
+    <!-- HOME -->
+    <section id="home" class="parallax">
+        <h1>Criamos o <span>Futuro</span> Digital</h1>
+        <p>Transformamos ideias em experiências digitais incríveis. Desenvolvimento web moderno com as melhores tecnologias do mercado.</p>
+        <div>
+            <a href="#services" class="btn btn-primary">🚀 Nossos Serviços</a>
+            <a href="#contact" class="btn btn-secondary">📞 Fale Conosco</a>
+        </div>
+    </section>
+
+    <!-- SOBRE -->
+    <section class="section light" id="about">
+        <div class="section-content">
+            <h2 class="section-title animate-on-scroll">📖 <span>Quem</span> Somos</h2>
+            <p class="section-subtitle animate-on-scroll">Conheça nossa história e propósito</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+                <div class="animate-on-scroll">
+                    <h3 style="font-size: 1.4rem; margin-bottom: 20px;">Paixão por Tecnologia</h3>
+                    <p style="color: #666; line-height: 1.8; margin-bottom: 15px;">
+                        Somos uma equipe apaixonada por desenvolvimento web, dedicada a criar soluções que 
+                        fazem a diferença. Combinamos criatividade, tecnologia e estratégia para entregar 
+                        resultados excepcionais.
+                    </p>
+                    <p style="color: #666; line-height: 1.8;">
+                        Com anos de experiência no mercado, já ajudamos dezenas de empresas a 
+                        transformar sua presença digital e alcançar novos patamares.
+                    </p>
+                </div>
+                <div class="animate-on-scroll" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div style="background: #f39c12; padding: 25px; border-radius: 15px; text-align: center; color: white;">
+                        <div style="font-size: 2.5rem; font-weight: 800;">50+</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">Projetos Entregues</div>
+                    </div>
+                    <div style="background: #2c3e50; padding: 25px; border-radius: 15px; text-align: center; color: white;">
+                        <div style="font-size: 2.5rem; font-weight: 800;">30+</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">Clientes Satisfeitos</div>
+                    </div>
+                    <div style="background: #e74c3c; padding: 25px; border-radius: 15px; text-align: center; color: white;">
+                        <div style="font-size: 2.5rem; font-weight: 800;">5</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">Anos de Mercado</div>
+                    </div>
+                    <div style="background: #27ae60; padding: 25px; border-radius: 15px; text-align: center; color: white;">
+                        <div style="font-size: 2.5rem; font-weight: 800;">98%</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">Satisfação</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVIÇOS (Parallax) -->
+    <section id="services" class="parallax">
+        <h2 class="section-title" style="font-size: 2.5rem;">💡 Nossos <span>Serviços</span></h2>
+        <p class="section-subtitle" style="max-width: 600px;">Soluções completas para sua presença digital</p>
+        
+        <div class="services-grid" style="max-width: 900px; width: 100%;">
+            <div class="service-card animate-on-scroll">
+                <div class="icon">🌐</div>
+                <h3>Web Development</h3>
+                <p>Sites e aplicações web modernas, responsivas e otimizadas para performance.</p>
+            </div>
+            <div class="service-card animate-on-scroll">
+                <div class="icon">📱</div>
+                <h3>Design Responsivo</h3>
+                <p>Experiências que funcionam perfeitamente em qualquer dispositivo.</p>
+            </div>
+            <div class="service-card animate-on-scroll">
+                <div class="icon">🎨</div>
+                <h3>UI/UX Design</h3>
+                <p>Interfaces intuitivas e agradáveis que encantam seus usuários.</p>
+            </div>
+            <div class="service-card animate-on-scroll">
+                <div class="icon">🚀</div>
+                <h3>Performance</h3>
+                <p>Otimização de velocidade e SEO para seu site ranquear melhor.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTATO (Parallax) -->
+    <section id="contact" class="parallax">
+        <div class="section-content contact-wrapper" style="width: 100%; max-width: 900px;">
+            <div class="contact-info animate-on-scroll">
+                <h3>📬 Vamos Conversar?</h3>
+                <p>Tem um projeto em mente? Adoraríamos ouvir sobre ele. Entre em contato e vamos criar algo incrível juntos!</p>
+                
+                <div class="info-item">📍 Rua Tech, 123 - São Paulo, SP</div>
+                <div class="info-item">📞 (11) 99999-8888</div>
+                <div class="info-item">✉️ contato@codeforge.com</div>
+                <div class="info-item">🕐 Seg-Sex: 9h às 18h</div>
+            </div>
+
+            <form class="contact-form animate-on-scroll" onsubmit="event.preventDefault(); alert('✅ Mensagem enviada! (simulação)');">
+                <input type="text" placeholder="Seu nome" required>
+                <input type="email" placeholder="Seu e-mail" required>
+                <input type="text" placeholder="Assunto">
+                <textarea placeholder="Sua mensagem..." required></textarea>
+                <button type="submit" class="btn btn-primary" style="align-self: flex-start;">📤 Enviar Mensagem</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 <a href="#">CodeForge</a> — Todos os direitos reservados. ✨</p>
+    </footer>
+
+    <script>
+        // Header transparente fica sólido ao scrollar
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Animação de entrada ao scrollar
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    </script>
+
+    <!-- 
+        🧪 DESAFIOS EXTRAS:
+        1. Adicione um vídeo de fundo em vez de imagem (parallax com vídeo)
+        2. Crie um contador regressivo para um lançamento
+        3. Adicione partículas animadas no background (CSS ou canvas)
+        4. Implemente um carrossel de depoimentos de clientes
+        5. Crie um mapa interativo (Google Maps ou Leaflet) na seção de contato
+        6. Adicione dark/light mode toggle com animação
+    -->
+</body>
+</html>
+

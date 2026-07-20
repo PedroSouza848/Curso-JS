@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício 1 - Cartão de Perfil</title>
+    <style>
+        /* ===== EXERCÍCIO 1: CARTÃO DE PERFIL =====
+         * 
+         * 🎯 OBJETIVOS:
+         *   1. Centralizar o card na tela usando Flexbox
+         *   2. Usar border-radius para cantos arredondados
+         *   3. Aplicar box-shadow para profundidade
+         *   4. Usar background gradient
+         *   5. Posicionar a foto do perfil (circular)
+         *   6. Fazer hover com efeito de elevação
+         *
+         * 📝 INSTRUÇÕES:
+         *   - Complete as partes com "TODO" comentado
+         *   - Brinque com cores, tamanhos e fontes
+         *   - Teste em diferentes tamanhos de tela
+         */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            /* TODO: Use flexbox para centralizar o card */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* TODO: Crie um fundo gradiente (ex: de #667eea para #764ba2) */
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            /* TODO: Arredonde os cantos */
+            border-radius: 20px;
+            /* TODO: Adicione uma sombra suave */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+            /* TODO: Adicione overflow: hidden para o header não vazar */
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* TODO: Crie um efeito hover que eleve o card */
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            /* TODO: Adicione um fundo gradiente (ex: #ff7e5f para #feb47b) */
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            padding: 40px 20px 40px;
+            position: relative;
+        }
+
+        /* TODO: Crie um padrão decorativo com pseudo-elementos */
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            /* TODO: Torne a imagem circular */
+            border-radius: 50%;
+            border: 4px solid white;
+            /* TODO: Adicione uma sombra na imagem */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+            /* TODO: Adicione transição para hover */
+            transition: transform 0.3s ease;
+        }
+
+        /* TODO: Faça a imagem crescer levemente no hover */
+        .card:hover .profile-img {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .card-body {
+            padding: 20px 25px 30px;
+        }
+
+        .card-body h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .card-body .title {
+            color: #ff7e5f;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .card-body p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* TODO: Estilize as redes sociais com flexbox */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            color: #666;
+            text-decoration: none;
+            font-size: 1.2rem;
+            /* TODO: Adicione transição suave */
+            transition: all 0.3s ease;
+        }
+
+        /* TODO: Crie cores diferentes para cada rede social no hover */
+        .social-icons a:hover {
+            background: #ff7e5f;
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .social-icons a:nth-child(2):hover {
+            background: #764ba2;
+        }
+
+        .social-icons a:nth-child(3):hover {
+            background: #667eea;
+        }
+
+        .btn {
+            /* TODO: Estilize o botão */
+            display: inline-block;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: white;
+            padding: 12px 35px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 126, 95, 0.4);
+        }
+
+        /* TODO: Torne o layout responsivo */
+        @media (max-width: 400px) {
+            .card {
+                max-width: 280px;
+            }
+            
+            .card-body {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="card-header">
+            <!-- Use uma imagem placeholder - substitua por uma real se quiser -->
+            <img src="https://i.pravatar.cc/150?img=11" alt="Foto de perfil" class="profile-img">
+        </div>
+        <div class="card-body">
+            <h2>Ana Silva</h2>
+            <p class="title">Desenvolvedora Front-End</p>
+            <p>🚀 Apaixonada por tecnologia e design. Transformando ideias em experiências digitais incríveis.</p>
+            
+            <div class="social-icons">
+                <a href="#" title="GitHub">🐙</a>
+                <a href="#" title="LinkedIn">🔗</a>
+                <a href="#" title="Twitter">🐦</a>
+            </div>
+
+            <a href="#" class="btn">📬 Entrar em Contato</a>
+        </div>
+    </div>
+
+    <!-- 
+        🧪 DESAFIOS EXTRAS:
+        1. Adicione um "status" online (bolinha verde) na foto
+        2. Crie uma versão dark mode do card
+        3. Adicione animação de entrada (fadeIn + slideUp)
+        4. Troque a imagem placeholder por uma real (unsplash, etc)
+        5. Adicione badges de habilidades (HTML, CSS, JS)
+    -->
+
+</body>
+</html>
+

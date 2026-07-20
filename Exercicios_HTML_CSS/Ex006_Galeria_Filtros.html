@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício 6 - Galeria com Filtros</title>
+    <style>
+        /* ===== EXERCÍCIO 6: GALERIA COM FILTROS =====
+         * 
+         * 🎯 OBJETIVOS:
+         *   1. CSS Custom Properties (variáveis)
+         *   2. Filtros CSS (filter: blur, grayscale, sepia, etc.)
+         *   3. Grid com Masonry-like layout
+         *   4. Efeitos hover avançados (overlay, scale, rotate)
+         *   5. Filtros via data attributes + JS
+         *   6. Transições suaves entre filtros
+         *
+         * 📝 INSTRUÇÕES:
+         *   - Clique nos botões de filtro
+         *   - Passe o mouse nas imagens
+         *   - Complete os TODOs
+         */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===== CSS CUSTOM PROPERTIES ===== */
+        :root {
+            --primary: #e94560;
+            --secondary: #0f3460;
+            --dark: #1a1a2e;
+            --light: #f5f5f5;
+            --gray: #888;
+            --radius: 12px;
+            --shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--light);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .gallery-header {
+            text-align: center;
+            padding: 60px 20px 30px;
+            background: linear-gradient(135deg, var(--dark), var(--secondary));
+            color: white;
+        }
+
+        .gallery-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .gallery-header p {
+            opacity: 0.8;
+            font-size: 1.05rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* ===== FILTROS / BOTÕES ===== */
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        /* TODO: Estilize os botões de filtro */
+        .filter-btn {
+            padding: 10px 25px;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            /* TODO: Adicione transição */
+            transition: all var(--transition);
+            font-family: inherit;
+        }
+
+        .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.3);
+        }
+
+        /* TODO: Estilize o botão ativo */
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+        }
+
+        /* ===== GALERIA EM GRID ===== */
+        /* TODO: Crie o grid da galeria */
+        .gallery-grid {
+            display: grid;
+            /* TODO: Use auto-fill para responsividade automática */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* TODO: Faça alguns itens ocuparem 2 colunas para efeito masonry */
+        .gallery-item.featured {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        /* TODO: Estilize cada item da galeria */
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            /* TODO: Adicione transição */
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            /* TODO: Adicione transição para efeitos hover */
+            transition: all var(--transition);
+        }
+
+        /* TODO: Crie overlay que aparece no hover */
+        .gallery-item .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.8));
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 25px;
+            opacity: 0;
+            transition: all var(--transition);
+        }
+
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+
+        /* Efeitos hover na imagem */
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* TODO: Aplique filtros diferentes nas imagens por categoria */
+        .gallery-item[data-category="nature"] img {
+            filter: saturate(1.2) brightness(1.05);
+        }
+
+        .gallery-item[data-category="city"] img {
+            filter: contrast(1.1) saturate(0.9);
+        }
+
+        .gallery-item[data-category="tech"] img {
+            filter: sepia(0.3) hue-rotate(180deg);
+        }
+
+        .gallery-item[data-category="art"] img {
+            filter: saturate(1.5) brightness(1.1);
+        }
+
+        /* Remove filtro no hover para ver cores reais */
+        .gallery-item:hover img {
+            filter: none;
+        }
+
+        /* Conteúdo do overlay */
+        .overlay .category-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            align-self: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .overlay h3 {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .overlay p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .overlay .expand-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transform: scale(0);
+            transition: all 0.3s ease 0.1s;
+        }
+
+        .gallery-item:hover .expand-icon {
+            transform: scale(1);
+        }
+
+        /* ===== ANIMAÇÃO DE FILTRO ===== */
+        .gallery-item.hide {
+            display: none;
+        }
+
+        .gallery-item.show {
+            animation: fadeInScale 0.5s ease backwards;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ===== CONTADOR ===== */
+        .counter {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .gallery-item.featured {
+                grid-column: span 2;
+                grid-row: span 1;
+            }
+
+            .gallery-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .filter-btn {
+                font-size: 0.8rem;
+                padding: 8px 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-item.featured {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="gallery-header">
+        <h1>🎨 Galeria Criativa</h1>
+        <p>Explore nossa coleção de imagens — clique nos filtros para categorizar</p>
+    </header>
+
+    <div class="container">
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">📌 Todos</button>
+            <button class="filter-btn" data-filter="nature">🌿 Natureza</button>
+            <button class="filter-btn" data-filter="city">🏙️ Cidades</button>
+            <button class="filter-btn" data-filter="tech">💻 Tecnologia</button>
+            <button class="filter-btn" data-filter="art">🎭 Arte</button>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Natureza -->
+            <div class="gallery-item featured" data-category="nature">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=600&fit=crop" alt="Natureza">
+                <div class="overlay">
+                    <span class="expand-icon">🔍</span>
+                    <span class="category-tag">🌿 Natureza</span>
+                    <h3>Montanhas ao Amanhecer</h3>
+                    <p>Paisagem deslumbrante capturada nos Alpes Suíços</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="nature">
+                <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=400&fit=crop" alt="Natureza">
+                <div class="overlay">
+                    <span class="expand-icon">🔍</span>
+                    <span class="category-tag">🌿 Natureza</span>
+                    <h3>Floresta Encantada</h3>
+                    <p>Raio de sol atravessando as árvores</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="nature">
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=400&fit=crop" alt="Praia">
+                <div class="overlay">
+                    <span class="expand-icon">🔍</span>
+                    <span class="category-tag">🌿 Natureza</span>
+                    <h3>Paraíso Tropical</h3>
+                    <p>Praia de areias brancas e águas cristalinas</p>
+                </div>
+            </div>
+
+            <!-- Cidades -->
+            <div class="gallery-item" data-category="city">
+                <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=400&h=400&fit=crop" alt="Cidade">
+                <div class="overlay">
+                    <span class="expand-icon">🔍</span>
+                    <span class="category-tag">🏙️ Cidade</span>
+                    <h3>Vida Urbana</h3>
+                    <p>Arranha-céus da metrópole ao entardecer</p>
+                </div>
+            </div>
+
+            <div class="gallery-item featured" data-category="city">
+                <img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=600&h=600&fit=crop" alt="Cidade">
+                <div class="overlay">
+                    <span class="expand-icon">🔍</span>
+                    <span class="category-tag">🏙️ Cidade</span>
+                    <h3>Nova York à Noite</h3>
+                    <p>Times Square iluminada e cheia de energia</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="city">
+                <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=400&fit=crop" alt="Cidade">
+                <div class="overlay">
+                    <span class="expand-icon">🔍</span>
+                    <span class="category-tag">🏙️ Cidade</span>
+                    <h3>Arquitetura Moderna</h3>
+                    <p>Linhas e formas da arquitetura contemporânea</p>
+                </div>
+            </div>
+
+            <!-- Tecnologia -->
+            <div class="gallery-item" data-category="tech">
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=400&fit=crop" alt="Tech">
+                <div class="overlay">
+                    <span class="expand-icon">🔍</span>
+                    <span class="category-tag">💻 Tecnologia</span>
+                    <h3>Circuito Integrado</h3>
+                    <p>Detalhes de um processador moderno</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="tech">
+                <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=400&fit=crop" alt="Tech">
+                <div class="overlay">
+                    <span class="expand-icon">🔍</span>
+                    <span class="category-tag">💻 Tecnologia</span>
+                    <h3>Código Fonte</h3>
+                    <p>Linhas de código em um monitor</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="tech">
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=400&fit=crop" alt="Tech">
+                <div class="overlay">
+                    <span class="expand-icon">🔍</span>
+                    <span class="category-tag">💻 Tecnologia</span>
+                    <h3>Estação de Trabalho</h3>
+                    <p>Setup de desenvolvedor com múltiplas telas</p>
+                </div>
+            </div>
+
+            <!-- Arte -->
+            <div class="gallery-item featured" data-category="art">
+                <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&h=600&fit=crop" alt="Arte">
+                <div class="overlay">
+                    <span class="expand-icon">🔍</span>
+                    <span class="category-tag">🎭 Arte</span>
+                    <h3>Arte Abstrata</h3>
+                    <p>Explosão de cores e formas geométricas</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="art">
+                <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&h=400&fit=crop" alt="Arte">
+                <div class="overlay">
+                    <span class="expand-icon">🔍</span>
+                    <span class="category-tag">🎭 Arte</span>
+                    <h3>Paleta do Artista</h3>
+                    <p>Tintas e pincéis em uma manhã criativa</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="art">
+                <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?w=400&h=400&fit=crop" alt="Arte">
+                <div class="overlay">
+                    <span class="expand-icon">🔍</span>
+                    <span class="category-tag">🎭 Arte</span>
+                    <h3>Escultura Moderna</h3>
+                    <p>Arte contemporânea em exposição</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="counter" id="counter">Mostrando <strong id="visibleCount">12</strong> de <strong id="totalCount">12</strong> imagens</p>
+    </div>
+
+    <script>
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const visibleCount = document.getElementById('visibleCount');
+        const totalCount = document.getElementById('totalCount');
+
+        // TODO: Implemente a lógica de filtro
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active de todos
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+
+                let count = 0;
+                galleryItems.forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.classList.remove('hide');
+                        item.classList.add('show');
+                        count++;
+                    } else {
+                        item.classList.remove('show');
+                        item.classList.add('hide');
+                    }
+                });
+
+                visibleCount.textContent = count;
+            });
+        });
+
+        // Contagem inicial
+        totalCount.textContent = galleryItems.length;
+    </script>
+
+    <!-- 
+        🧪 DESAFIOS EXTRAS:
+        1. Adicione Lightbox (modal ampliado) ao clicar na imagem
+        2. Implemente busca por texto (input search)
+        3. Adicione ordenação (mais recente, alfabética)
+        4. Crie lazy loading com Intersection Observer
+        5. Adicione paginação ou "load more"
+        6. Implemente drag and drop para reordenar as imagens
+    -->
+</body>
+</html>
+
