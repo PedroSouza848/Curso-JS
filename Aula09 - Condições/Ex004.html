@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imigração</title>
+    <style>
+        body{
+            font: normal 18pt Arial;
+        }
+        input{
+            font: normal 18pt Arial;
+            width: 100px;
+        }
+        div#res{
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Imigração </h1>
+    Informe o seu país: <input type="text" name="txtpais" id="txtpais">
+    <input type="button" value="Verificar" onclick="verificar()"> 
+    <div id="pais">
+
+    </div>
+    <script>
+        function verificar(){
+            var txtpa = window.document.querySelector('input#txtpais')
+            var pais = window.document.querySelector('div#pais')
+            if (txtpa.value == 'Brasil'){
+                pais.innerHTML = (`Você é Brasileiro!`)
+            }else{
+                pais.innerHTML = (`Vivendo em ${txtpa.value}, você é Gringo!`)
+            }
+        }
+    </script>
+</body>
+</html>
