@@ -1,0 +1,28 @@
+body{
+    background-color: lightblue;
+}
+header > h1{
+    color: white;
+    text-align: center;
+    font-size: 2.4em;
+}
+
+section {
+    background-color: white;
+    margin: auto;
+    width: 600px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.324);
+}
+
+section > div > input{
+    margin: 10px;
+}
+
+footer{
+    color: white;
+    text-align: center;
+    font-style: italic;
+    font-size: 1.3em;
+}
