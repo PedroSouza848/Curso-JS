@@ -14,6 +14,6 @@ const usuario = usuarios.find(u => u.id === 3);
 
 console.log("Usuario: ", usuario);
 
-const produto = produtos.find(descricao => descricao.produto === "Mouse");
+const produto = produtos.find(descricao => descricao.preco === 30);
 
 console.log(`O preço do ${produto.produto} é de R$${produto.preco} Reais`);
